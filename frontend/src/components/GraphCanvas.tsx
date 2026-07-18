@@ -151,17 +151,10 @@ const GraphCanvasInner: React.FC<GraphCanvasProps> = ({
     }
   }, [folderId, setEdges]);
 
-  // 4. ダブルクリックでノード追加ダイアログを開く
-  const onPaneDoubleClick = useCallback((event: React.MouseEvent) => {
-    // ノードやエッジ、UIコントロールの上でのダブルクリックは無視する
-    const target = event.target as Element;
-    if (
-      target.closest('.react-flow__node') || 
-      target.closest('.react-flow__edge') || 
-      target.closest('.react-flow__controls')
-    ) {
-      return;
-    }
+  // 4. キャンバスのダブルクリックでノード追加ダイアログを開く
+  const onPaneClick = useCallback((event: React.MouseEvent) => {
+    // 2回連続クリック（ダブルクリック）の時のみノードを作成する
+    if (event.detail !== 2) return;
 
     event.preventDefault();
     const position = screenToFlowPosition({
@@ -317,7 +310,8 @@ const GraphCanvasInner: React.FC<GraphCanvasProps> = ({
           onEdgesChange={onEdgesChange}
           onNodeDragStop={onNodeDragStop}
           onConnect={onConnect}
-          onDoubleClick={onPaneDoubleClick}
+          onPaneClick={onPaneClick}
+          zoomOnDoubleClick={false}
           onEdgeClick={onEdgeClick}
           nodeTypes={nodeTypes}
           fitView
