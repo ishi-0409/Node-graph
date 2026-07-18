@@ -153,9 +153,15 @@ const GraphCanvasInner: React.FC<GraphCanvasProps> = ({
 
   // 4. ダブルクリックでノード追加ダイアログを開く
   const onPaneDoubleClick = useCallback((event: React.MouseEvent) => {
-    // ターゲットがキャンバス（pane）である場合のみ処理する
+    // ノードやエッジ、UIコントロールの上でのダブルクリックは無視する
     const target = event.target as Element;
-    if (!target.classList.contains('react-flow__pane')) return;
+    if (
+      target.closest('.react-flow__node') || 
+      target.closest('.react-flow__edge') || 
+      target.closest('.react-flow__controls')
+    ) {
+      return;
+    }
 
     event.preventDefault();
     const position = screenToFlowPosition({
