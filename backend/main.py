@@ -35,7 +35,7 @@ def global_exception_handler(request, exc):
 # CORS設定
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 本番環境では適切に変更してください
+    allow_origins=["https://node-graph-ebon.vercel.app/"],  # 本番環境では適切に変更してください
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
