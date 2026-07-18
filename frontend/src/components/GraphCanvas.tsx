@@ -6,8 +6,7 @@ import {
   useNodesState, 
   useEdgesState, 
   addEdge,
-  ReactFlowProvider,
-  useReactFlow
+  ReactFlowProvider
 } from '@xyflow/react';
 import type { Connection, Edge, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
@@ -51,7 +50,7 @@ const GraphCanvasInner: React.FC<GraphCanvasProps> = ({
   const [isEdgeModalOpen, setIsEdgeModalOpen] = useState(false);
   const [edgeLabel, setEdgeLabel] = useState('');
 
-  const { screenToFlowPosition } = useReactFlow();
+
 
   // 1. データ取得
   const loadGraphData = useCallback(async () => {
@@ -151,21 +150,7 @@ const GraphCanvasInner: React.FC<GraphCanvasProps> = ({
     }
   }, [folderId, setEdges]);
 
-  // 4. キャンバスのダブルクリックでノード追加ダイアログを開く
-  const onPaneClick = useCallback((event: React.MouseEvent) => {
-    // 2回連続クリック（ダブルクリック）の時のみノードを作成する
-    if (event.detail !== 2) return;
 
-    event.preventDefault();
-    const position = screenToFlowPosition({
-      x: event.clientX,
-      y: event.clientY,
-    });
-    setClickPosition(position);
-    setNodeText('');
-    setNodeModalMode('create');
-    setIsNodeModalOpen(true);
-  }, [screenToFlowPosition]);
 
   // ノード作成・編集のサブミット
   const handleNodeSubmit = async (e: React.FormEvent) => {
@@ -284,7 +269,7 @@ const GraphCanvasInner: React.FC<GraphCanvasProps> = ({
           <div className="toolbar-info">
             <span className="toolbar-folder-name">{folderName}</span>
             <span className="toolbar-folder-desc">
-              {nodes.length} ノード / {edges.length} エッジ (ダブルクリックでノード追加)
+              {nodes.length} ノード / {edges.length} エッジ
             </span>
           </div>
         </div>
@@ -310,8 +295,7 @@ const GraphCanvasInner: React.FC<GraphCanvasProps> = ({
           onEdgesChange={onEdgesChange}
           onNodeDragStop={onNodeDragStop}
           onConnect={onConnect}
-          onPaneClick={onPaneClick}
-          zoomOnDoubleClick={false}
+
           onEdgeClick={onEdgeClick}
           nodeTypes={nodeTypes}
           fitView
