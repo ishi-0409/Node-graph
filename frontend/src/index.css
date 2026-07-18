@@ -910,3 +910,31 @@ body {
   border-color: rgba(239, 68, 68, 0.4);
 }
 
+/* --- レスポンシブ (スマホ対応) --- */
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+  }
+  
+  /* モバイルでサイドバーが開いているとき、トグルボタンをサイドバーの右側に移動して隠れないようにする */
+  .sidebar-open .sidebar-toggle-floating {
+    left: 335px !important;
+  }
+
+  /* ツールバーもモバイルではサイドバーの裏に隠れるように位置をずらす */
+  .sidebar-open .toolbar-floating {
+    left: 395px !important;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+  
+  /* モバイル時のツールバーデフォルト位置 */
+  .toolbar-floating {
+    left: 80px;
+  }
+}
+

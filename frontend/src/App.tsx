@@ -6,7 +6,7 @@ import { Auth } from './components/Auth';
 import { supabase } from './supabase';
 import type { Folder } from './types';
 import { api } from './api';
-import { FolderPlus } from 'lucide-react';
+import { FolderPlus, Menu, ChevronLeft } from 'lucide-react';
 import type { Session } from '@supabase/supabase-js';
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [activeFolderId, setActiveFolderId] = useState<string | null>(null);
   const [isAIPanelOpen, setIsAIPanelOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   
   // フォルダ作成時の補助ステート
@@ -154,10 +155,23 @@ function App() {
         onDeleteFolder={handleDeleteFolder}
         userEmail={session.user?.email}
         onLogout={handleLogout}
+        collapsed={sidebarCollapsed}
       />
 
       {/* メインエリア */}
-      <main style={{ flex: 1, position: 'relative', height: '100%' }}>
+      <main 
+        style={{ flex: 1, position: 'relative', height: '100%' }} 
+        className={sidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-open'}
+      >
+        {/* サイドバー開閉用フローティングボタン */}
+        <button 
+          className="sidebar-toggle-floating" 
+          onClick={() => setSidebarCollapsed(prev => !prev)}
+          title={sidebarCollapsed ? "サイドバーを開く" : "サイドバーを閉じる"}
+        >
+          {sidebarCollapsed ? <Menu size={20} /> : <ChevronLeft size={20} />}
+        </button>
+
         {activeFolderId && activeFolder ? (
           <>
             <GraphCanvas

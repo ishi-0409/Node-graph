@@ -22,6 +22,7 @@ interface SidebarProps {
   onDeleteFolder: (id: string) => Promise<void>;
   userEmail?: string;
   onLogout?: () => void;
+  collapsed: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -33,6 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onDeleteFolder,
   userEmail,
   onLogout,
+  collapsed,
 }) => {
   const [isAddingRoot, setIsAddingRoot] = useState(false);
   const [newRootName, setNewRootName] = useState('');
@@ -211,7 +213,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
         <h1 className="sidebar-title">
           <Network size={22} style={{ color: 'var(--color-primary)' }} />
