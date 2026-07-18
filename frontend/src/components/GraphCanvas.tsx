@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   ReactFlow, 
   Background, 
@@ -13,9 +13,8 @@ import type { Connection, Edge, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { CustomNode } from './CustomNode';
 import type { CustomNodeData } from './CustomNode';
-import type { GraphNode, GraphEdge } from '../types';
 import { api } from '../api';
-import { Plus, Sparkles, MessageSquare, Trash2, Edit3, X, Check } from 'lucide-react';
+import { Plus, Sparkles, MessageSquare, Trash2, Edit3 } from 'lucide-react';
 
 // カスタムノードの登録
 const nodeTypes = {
@@ -105,7 +104,7 @@ const GraphCanvasInner: React.FC<GraphCanvasProps> = ({
   }, [loadGraphData, refreshTrigger]);
 
   // 2. ドラッグ終了時のオートセーブ
-  const onNodeDragStop = useCallback(async (_event: React.MouseEvent, node: Node) => {
+  const onNodeDragStop = useCallback(async (_event: any, node: Node) => {
     try {
       await api.updateNode(node.id, {
         position_x: node.position.x,

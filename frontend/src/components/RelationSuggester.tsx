@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { EdgeSuggestion, Folder, GraphNode } from '../types';
+import type { EdgeSuggestion } from '../types';
 import { api } from '../api';
 import { Sparkles, Check, X, ArrowRight, Info } from 'lucide-react';
 

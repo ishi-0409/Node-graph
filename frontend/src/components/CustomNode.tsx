@@ -4,7 +4,7 @@ import type { NodeProps } from '@xyflow/react';
 import { Trash2, Edit } from 'lucide-react';
 
 // custom node のデータ型
-export interface CustomNodeData {
+export interface CustomNodeData extends Record<string, unknown> {
   text: string;
   onEdit: (id: string, currentText: string) => void;
   onDelete: (id: string) => void;
