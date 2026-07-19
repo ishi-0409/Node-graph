@@ -11,12 +11,20 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 from google import genai
 from google.genai import types
-
 from pathlib import Path
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
 env_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
+# レート制限の設定（接続元IPアドレスベース）
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(title="Node Network Graph API")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # エラーハンドラ
 @app.exception_handler(Exception)
@@ -411,7 +419,8 @@ def delete_edge(id: str, current_user_id: str = Depends(get_current_user)):
 
 # gemini 関連性提案機能
 @app.post("/api/folders/{folder_id}/suggest-relations")
-def suggest_relations(folder_id: str, current_user_id: str = Depends(get_current_user)):
+@limiter.limit("5/minute")
+def suggest_relations(request: Request, folder_id: str, current_user_id: str = Depends(get_current_user)):
     db = get_supabase()
     ai_client = get_gemini_client()
 
