@@ -22,20 +22,26 @@ app = FastAPI(title="Node Network Graph API")
 @app.exception_handler(Exception)
 def global_exception_handler(request, exc):
     print("!!! EXCEPTION OCCURRED !!!")
-    traceback.print_exc()
+    traceback.print_exc()  
     return JSONResponse(
         status_code=500,
         content={
             "message": "Internal Server Error",
-            "detail": str(exc),
-            "traceback": traceback.format_exc()
+            "detail": "An unexpected error occurred on the server."
         }
     )
 
 # CORS設定
+
+allow_origins = [
+    "https://node-graph-ebon.vercel.app",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://node-graph-ebon.vercel.app/"],  # 本番環境では適切に変更してください
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
