@@ -101,8 +101,8 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Security(securi
             payload = jwt.decode(
                 token,
                 signing_key.key,
-                algorithms=[alg],
-                options={"verify_aud": False}
+                algorithms=["RS256", "ES256"],
+                audience="authenticated"
             )
         else:
             # HS256 など対称鍵の場合は、ローカルの JWT_SECRET を使用
@@ -115,8 +115,8 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Security(securi
             payload = jwt.decode(
                 token,
                 SUPABASE_JWT_SECRET,
-                algorithms=[alg],
-                options={"verify_aud": False}
+                algorithms=["HS256"],
+                audience="authenticated"
             )
             
         user_id = payload.get("sub")
