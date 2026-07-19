@@ -2,7 +2,7 @@ import os
 import traceback
 from typing import List, Optional
 import jwt
-from fastapi import FastAPI, HTTPException, status, Depends, Security
+from fastapi import FastAPI, HTTPException, status, Depends, Security, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
